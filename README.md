@@ -11,10 +11,15 @@ make clean && make
 ./bin/DM1
 ```
 
-**ATTENTION:** le répertoire `instances` doit se trouver dans le même répertoire d'où le programme est lancé. Si le programme est lancé depuis `bin` alors `instances` doit être dans `bin`. Pour utiliser le makefile les répertoires `bin`, `include`, `src` et `obj` doivent être présents.
+**ATTENTION:** le répertoire `instances` doit se trouver dans le même répertoire
+d'où le programme est lancé. Si le programme est lancé depuis `bin` alors `instances`
+doit être dans `bin`. Pour utiliser le makefile les répertoires `bin`, `include`,
+`src` et `obj` doivent être présents.
+
 
 ### Descente/Plus profonde descente
-Pour effectuer des améliorations par recherche locale de type plus profonde descente veuillez définir DEEPSEARCH (macro) à true :
+Pour effectuer des améliorations par recherche locale de type plus profonde descente
+veuillez définir DEEPSEARCH (macro dans le fichier `src/main.cpp`) à true :
 ```c
 #define DEEPSEARCH true
 ```
@@ -22,3 +27,16 @@ Sinon pour des descentes normales :
 ```c
 #define DEEPSEARCH false
 ```
+
+
+### Listes des instances qui ont été utilisées pour l'expérimentation
+* didactic.dat
+* pb_100rnd0100.dat
+* pb_200rnd0100.dat
+* pb_200rnd0300.dat
+* pb_200rnd0900.dat
+* pb_200rnd1500.dat
+* pb_500rnd0100.dat
+* pb_500rnd0700.dat
+* pb_1000rnd0100.dat
+* pb_1000rnd0500.dat
