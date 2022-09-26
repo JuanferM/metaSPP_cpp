@@ -91,9 +91,6 @@ bool isFeasible(
         sum_xi += x[i], z += x[i] * C[i];
     }
 
-    // for(j = 0; j < m; j++) std::cout << column[j] << " ";
-    // std::cout << std::endl;
-
     if(verbose) {
         m_assert(feasible, "No feasible solution detected");
         if(!IO)

@@ -74,7 +74,7 @@ bool one_oneExchange(
     }
 
     int i, j;
-    std::tie(i, j) = best_move; // Repurpose tmp_z
+    std::tie(i, j) = best_move;
     if((deep = i != -1 && j != -1)) {
         x[i] = 0, x[j] = 1, *z = best_z;
         for(c = 0; c < m && column; c++)
