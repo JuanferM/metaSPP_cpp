@@ -26,7 +26,6 @@ int main() {
         m_print(io,
                 "Construction gloutonne d'une solution admissible\n");
         TIMED(t1, std::tie(x, zInit, column) = GreedyConstruction(io, m, n, C, A, U));
-        if(column) delete[] column, column = nullptr;
         m_print(io, "  ", t1, " seconds\n");
         isFeasible(m, n, C, A, x, io, column);
         m_print(io, "z(xInit) = ", zInit, "\n\n");

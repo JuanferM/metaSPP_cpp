@@ -71,7 +71,7 @@ bool isFeasible(
         const int *x,
         std::ostream** IO,
         const int* extColumn,
-        const bool verbose) {
+        bool verbose) {
     bool feasible = true;
     int i(0), j(0), z(0), sum_xi(0), *column(nullptr);
     if(!extColumn) {
@@ -90,6 +90,9 @@ bool isFeasible(
         }
         sum_xi += x[i], z += x[i] * C[i];
     }
+
+    // for(j = 0; j < m; j++) std::cout << column[j] << " ";
+    // std::cout << std::endl;
 
     if(verbose) {
         m_assert(feasible, "No feasible solution detected");

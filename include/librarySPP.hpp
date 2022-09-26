@@ -60,7 +60,7 @@ bool isFeasible(
         const int* x,
         std::ostream** IO = nullptr,
         const int* extColumn = nullptr,
-        const bool verbose = true);
+        bool verbose = true);
 
 // Free  C  ,  A  and  U
 void freeSPP(int* C, int* A, double* U);

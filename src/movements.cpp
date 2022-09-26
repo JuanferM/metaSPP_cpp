@@ -73,17 +73,18 @@ bool one_oneExchange(
         x[i] = 1;
     }
 
-    std::tie(tmp_z, n) = best_move; // Repurpose tmp_z
-    if((deep = tmp_z != -1 && n != -1)) {
-        x[tmp_z] = 0, x[n] = 1, *z = best_z;
+    int i, j;
+    std::tie(i, j) = best_move; // Repurpose tmp_z
+    if((deep = i != -1 && j != -1)) {
+        x[i] = 0, x[j] = 1, *z = best_z;
         for(c = 0; c < m && column; c++)
-            column[c] += A[INDEX(n, c)] - A[INDEX(tmp_z, c)];
+            column[c] += A[INDEX(j, c)] - A[INDEX(i, c)];
     }
 
     return deep;
 }
 
-bool combinations(
+void combinations(
         // heuristic variables
         int m,
         int n,
@@ -104,7 +105,7 @@ bool combinations(
         std::deque<int>::iterator start,
         std::deque<int>::iterator end,
         int depth) {
-    if(*stop) return true;
+    if(*stop) return ;
 
     // Current combination is ready to be used
     if(depth == 2) {
@@ -127,8 +128,8 @@ bool combinations(
                                                         pair_of_1[1],
                                                         k);
                         } else {
-                            *stop = true;
-                            return (*z = depth);
+                            *stop = true, *z = depth;
+                            return ;
                         }
                     }
                     for(c = 0; c < m && column; c++)
@@ -151,8 +152,6 @@ bool combinations(
                     best_z, best_move, idx0, pair_of_1, it+1, end, depth+1);
         }
     }
-
-    return true;
 }
 
 bool two_oneExchange(
@@ -174,13 +173,13 @@ bool two_oneExchange(
     combinations(m, n, C, A, x, z, deep, column, &stop, &best_z,
             best_move, idx0, pair_of_1, idx1.begin(), idx1.end(), 0);
 
-    int k(-1), l(-1); std::tie(n, k, l) = best_move;
-    if((deep = n != -1 && k != -1 && l != -1)) {
-        x[n] = 0, x[k] = 0, x[l] = 1, *z = best_z;
+    int i(-1), j(-1), k(-1); std::tie(i, j, k) = best_move;
+    if((deep = i != -1 && j != -1 && k != -1)) {
+        x[i] = 0, x[j] = 0, x[k] = 1, *z = best_z;
         for(int c = 0; c < m && column; c++)
-            column[c] +=  A[INDEX(l, c)]
-                        - A[INDEX(n, c)]
-                        - A[INDEX(k, c)];
+            column[c] +=  A[INDEX(k, c)]
+                        - A[INDEX(i, c)]
+                        - A[INDEX(j, c)];
     }
 
     return deep;
