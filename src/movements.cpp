@@ -1,20 +1,5 @@
 #include "movements.hpp"
-
-std::tuple<
-    int,
-    int,
-    std::forward_list<int>,
-    std::forward_list<int>> find01(int size, int* const arr) {
-    int idx0_size(0), idx1_size(0);
-    std::forward_list<int> idx0, idx1;
-
-    for(--size; size >= 0; size--) {
-        if(arr[size] == 0) idx0.push_front(size), idx0_size++;
-        if(arr[size] == 1) idx1.push_front(size), idx1_size++;
-    }
-
-    return std::make_tuple(idx0_size, idx1_size, idx0, idx1);
-}
+#include <iostream>
 
 bool zero_oneExchange(
         int m,
@@ -61,10 +46,10 @@ bool one_oneExchange(
         int* z,
         bool deep,
         int* column) {
-    int c(-1), tmp_z(-1), best_z(*z), idx0_size(-1), idx1_size(-1);
+    int c(-1), tmp_z(-1), best_z(*z);
     std::tuple<int, int> best_move(-1, -1);
     std::forward_list<int> idx0, idx1;
-    std::tie(idx0_size, idx1_size, idx0, idx1) = find01(n, x);
+    std::tie(idx0, idx1) = find01<std::forward_list<int>>(n, x);
 
     for(int i : idx1) {
         x[i] = 0;
@@ -72,7 +57,7 @@ bool one_oneExchange(
             if(i != j) {
                 x[j] = 1, tmp_z = *z - C[i] + C[j];
                 if(tmp_z > best_z) {
-                    for(c = 0; c < m && column; c++) //TODO
+                    for(c = 0; c < m && column; c++)
                         column[c] += A[INDEX(j, c)] - A[INDEX(i, c)];
                     if(isFeasible(m, n, C, A, x, nullptr, column, false)) {
                         if(deep)
@@ -91,7 +76,7 @@ bool one_oneExchange(
     std::tie(tmp_z, n) = best_move; // Repurpose tmp_z
     if((deep = tmp_z != -1 && n != -1)) {
         x[tmp_z] = 0, x[n] = 1, *z = best_z;
-        for(c = 0; c < m && column; c++) //TODO
+        for(c = 0; c < m && column; c++)
             column[c] += A[INDEX(n, c)] - A[INDEX(tmp_z, c)];
     }
 
@@ -113,11 +98,11 @@ bool combinations(
         bool *stop,
         int *best_z,
         std::tuple<int, int, int>& best_move,
-        const std::forward_list<int> &idx0,
+        const std::deque<int> &idx0,
         // variables useful to build up the combinations
         int *pair_of_1,
-        std::forward_list<int>::iterator start,
-        std::forward_list<int>::iterator end,
+        std::deque<int>::iterator start,
+        std::deque<int>::iterator end,
         int depth) {
     if(*stop) return true;
 
@@ -129,7 +114,7 @@ bool combinations(
         for(int k : idx0) {
             if(pair_of_1[0] != k && pair_of_1[1] != k) {
                 // Repurpose depth
-                x[k] = 1, depth = *z - C[pair_of_1[0]] - C[pair_of_1[0]] + C[k];
+                x[k] = 1, depth = *z - C[pair_of_1[0]] - C[pair_of_1[1]] + C[k];
                 if(depth > *best_z) {
                     for(c = 0; c < m && column; c++)
                         column[c] +=  A[INDEX(k, c)]
@@ -158,12 +143,12 @@ bool combinations(
         x[pair_of_1[0]] = 1, x[pair_of_1[1]] = 1;
     } else {
         // Replace index with all possible elements.
-        for(std::forward_list<int>::iterator it = start, prev = start;
-            it != end && std::distance(++it, end) >= 2-depth;
-            ++prev) {
-            pair_of_1[depth] = *prev;
-            return combinations(m, n, C, A, x, z, deep, column, stop,
-                    best_z, best_move, idx0, pair_of_1, it, end, depth+1);
+        for(std::deque<int>::iterator it = start;
+            it != end && end - it+1 >= 2-depth;
+            ++it) {
+            pair_of_1[depth] = *it;
+            combinations(m, n, C, A, x, z, deep, column, stop,
+                    best_z, best_move, idx0, pair_of_1, it+1, end, depth+1);
         }
     }
 
@@ -182,9 +167,9 @@ bool two_oneExchange(
     bool stop(false);
     int best_z(*z);
     int pair_of_1[2] = { -1, -1 };
-    std::forward_list<int> idx0, idx1;
+    std::deque<int> idx0, idx1;
     std::tuple<int, int, int> best_move(-1, -1, -1);
-    std::tie(std::ignore, std::ignore, idx0, idx1) = find01(n, x);
+    std::tie(idx0, idx1) = find01<std::deque<int>>(n, x);
 
     combinations(m, n, C, A, x, z, deep, column, &stop, &best_z,
             best_move, idx0, pair_of_1, idx1.begin(), idx1.end(), 0);

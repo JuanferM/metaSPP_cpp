@@ -3,6 +3,7 @@
 
 #include "librarySPP.hpp"
 
+#include <deque>
 #include <forward_list>
 
 template<typename T>
@@ -16,11 +17,17 @@ std::forward_list<int> findItems(int size, T* const arr, T target) {
     return indices;
 }
 
-std::tuple<
-    int,
-    int,
-    std::forward_list<int>,
-    std::forward_list<int>> find01(int size, int* const arr);
+template<typename R>
+std::tuple<R, R> find01(int size, int* const arr) {
+    R idx0, idx1;
+
+    for(--size; size >= 0; size--) {
+        if(arr[size] == 0) idx0.push_front(size);
+        if(arr[size] == 1) idx1.push_front(size);
+    }
+
+    return std::make_tuple(idx0, idx1);
+}
 
 // Implements 01-exchange.
 // Returns true if an improved solution is found.
