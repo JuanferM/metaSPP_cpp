@@ -63,7 +63,8 @@ std::tuple<int*, int> GreedyImprovement(
     // same k-p exchange on nx. If the k-p exchange fail to find a neighbor that
     // improves z then we select another k-p exchange and we repeat the process.
     memcpy(nx, x, sizeof(int) * n);
-    while(i >= 0 && ((t = f[i](m, n, C, A, nx, &nz, deep, column)) || !t)) {
+    while(i >= 0) {
+        t = f[i](m, n, C, A, nx, &nz, deep, column);
         if(!printed[i])
             m_print(io, "\n > ", names[i], " : "), printed[i] = true;
         if(t) m_print(io, "x"); else i--;
