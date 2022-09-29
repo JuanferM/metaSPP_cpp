@@ -5,13 +5,13 @@ bool zero_oneExchange(
         int m,
         int n,
         const int* C,
-        const int* A,
-        int* x,
+        const char* A,
+        char* x,
         int* z,
         bool deep,
-        int* column) {
+        char* column) {
     int c(-1), tmp_z(-1), best_z(*z), best_move(-1);
-    std::forward_list<int> idx0 = findItems(n, x, 0);
+    std::forward_list<int> idx0 = findItems<char>(n, x, 0);
 
     for(int i : idx0) {
         x[i] = 1; tmp_z = *z + C[i];
@@ -41,11 +41,11 @@ bool one_oneExchange(
         int m,
         int n,
         const int* C,
-        const int* A,
-        int* x,
+        const char* A,
+        char* x,
         int* z,
         bool deep,
-        int* column) {
+        char* column) {
     int c(-1), tmp_z(-1), best_z(*z);
     std::tuple<int, int> best_move(-1, -1);
     std::forward_list<int> idx0, idx1;
@@ -89,11 +89,11 @@ void combinations(
         int m,
         int n,
         const int *C,
-        const int *A,
-        int *x,
+        const char *A,
+        char *x,
         int *z,
         bool deep,
-        int* column,
+        char* column,
         // indices list (for variables set to 0)
         // and additional variables
         bool *stop,
@@ -158,11 +158,11 @@ bool two_oneExchange(
         int m,
         int n,
         const int* C,
-        const int* A,
-        int* x,
+        const char* A,
+        char* x,
         int* z,
         bool deep,
-        int* column) {
+        char* column) {
     bool stop(false);
     int best_z(*z);
     int pair_of_1[2] = { -1, -1 };

@@ -7,24 +7,24 @@
 #include <cstring>
 
 // Greedy construction of a feasible solution
-std::tuple<int*, int, int*> GreedyConstruction(
+std::tuple<char*, int, char*> GreedyConstruction(
         std::ostream* io[],
         int m,
         int n,
         const int* C,
-        const int* A,
-        const double* U);
+        const char* A,
+        const float* U);
 
 // Greedy improvement of a feasible solution through (deep) local search
-std::tuple<int*, int> GreedyImprovement(
+std::tuple<char*, int> GreedyImprovement(
         std::ostream* io[],
         int m,
         int n,
         const int* C,
-        const int* A,
-        const int* x,
+        const char* A,
+        const char* x,
         int zInit,
         bool deep = true,
-        int* column = nullptr);
+        char* column = nullptr);
 
 #endif /* end of include guard: HEURISTICS_H */

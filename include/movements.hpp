@@ -18,7 +18,7 @@ std::forward_list<int> findItems(int size, T* const arr, T target) {
 }
 
 template<typename R>
-std::tuple<R, R> find01(int size, int* const arr) {
+std::tuple<R, R> find01(int size, char* const arr) {
     R idx0, idx1;
 
     for(--size; size >= 0; size--) {
@@ -35,11 +35,11 @@ bool zero_oneExchange(
         int m,
         int n,
         const int* C,
-        const int* A,
-        int* x,
+        const char* A,
+        char* x,
         int* z,
         bool deep,
-        int* column = nullptr);
+        char* column = nullptr);
 
 // Implements 11-exchange
 // Returns true if an improved solution is found.
@@ -47,11 +47,11 @@ bool one_oneExchange(
         int m,
         int n,
         const int* C,
-        const int* A,
-        int* x,
+        const char* A,
+        char* x,
         int* z,
         bool deep,
-        int* column = nullptr);
+        char* column = nullptr);
 
 // Helper function for two_oneExchange()
 // compute all non-symmetrical pairs of indices (indices of the variables
@@ -73,11 +73,11 @@ bool combinations(
         int m,
         int n,
         const int* C,
-        const int* A,
-        int* x,
+        const char* A,
+        char* x,
         int* z,
         bool deep,
-        int* column,
+        char* column,
         bool* stop,
         int* best_z,
         std::tuple<int, int, int>& best_move,
@@ -95,10 +95,10 @@ bool two_oneExchange(
         int m,
         int n,
         const int* C,
-        const int* A,
-        int* x,
+        const char* A,
+        char* x,
         int* z,
         bool deep,
-        int* column = nullptr);
+        char* column = nullptr);
 
 #endif /* end of include guard: MOVEMENTS_H */

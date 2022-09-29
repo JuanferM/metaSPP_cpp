@@ -1,14 +1,15 @@
 #include "heuristics.hpp"
 
-std::tuple<int*, int, int*> GreedyConstruction(
+std::tuple<char*, int, char*> GreedyConstruction(
         std::ostream* io[],
         int m,
         int n,
         const int* C,
-        const int* A,
-        const double* U) {
+        const char* A,
+        const float* U) {
     bool valid = true;
-    int i(0), j(0), s(0), *x = new int[n], *column = new int[m];
+    int i(0), j(0), s(0);
+    char *x = new char[n], *column = new char[m];
     for(i = 0; i < n; i++) x[i] = 0;
 
     // Indices of utilities in utilities decreasing order
@@ -38,20 +39,21 @@ std::tuple<int*, int, int*> GreedyConstruction(
     return std::make_tuple(x, dot(n, x, C), column);
 }
 
-std::tuple<int*, int> GreedyImprovement(
+std::tuple<char*, int> GreedyImprovement(
         std::ostream* io[],
         int m,
         int n,
         const int* C,
-        const int* A,
-        const int* x,
+        const char* A,
+        const char* x,
         int zInit,
         bool deep,
-        int* column) {
-    int i(2), t(1), nz(zInit), *nx = new int[n];
+        char* column) {
+    int i(2), t(1), nz(zInit);
+    char *nx = new char[n];
     char names[3][4] = { "0-1", "1-1", "2-1" };
     bool printed[3] = { false },
-        (*f[3])(int, int, const int*, const int*, int*, int*, bool, int*) = {
+        (*f[3])(int, int, const int*, const char*, char*, int*, bool, char*) = {
             zero_oneExchange,
             one_oneExchange,
             two_oneExchange
@@ -62,7 +64,7 @@ std::tuple<int*, int> GreedyImprovement(
     // found then we replace nx by that neighbor and we keep applying the
     // same k-p exchange on nx. If the k-p exchange fail to find a neighbor that
     // improves z then we select another k-p exchange and we repeat the process.
-    memcpy(nx, x, sizeof(int) * n);
+    memcpy(nx, x, sizeof(char) * n);
     while(i >= 0) {
         t = f[i](m, n, C, A, nx, &nz, deep, column);
         if(!printed[i])

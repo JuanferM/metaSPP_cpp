@@ -28,20 +28,20 @@ std::set<std::string> getfname(
     return files;
 }
 
-std::tuple<int, int, int*, int*, double*> loadSPP(std::string fname)
+std::tuple<int, int, int*, char*, float*> loadSPP(std::string fname)
 {
     std::ifstream f(fname);
     std::string line("");
     std::stringstream ss("");
-    int m(-1), n(-1), *C(nullptr), *A(nullptr), i(0), j(0);
-    double *U(nullptr);
+    int m(-1), n(-1), *C(nullptr), i(0), j(0);
+    char *A(nullptr); float *U(nullptr);
 
     try {
         if(f.is_open()) {
             // Read m (number of constraints) and n (number of variables)
             f >> m >> n; f.ignore();
             // Creates C, U and A. Init U and A elements to zero.
-            C = new int[n], U = new double[n], A = new int[n*m];
+            C = new int[n], U = new float[n], A = new char[n*m];
             for(i = 0; i < n*m; i++) { A[i] = 0; if(i < n) U[i] = 0; }
             // Read the n coefficiens of the objective function and init C
             getline(f, line); ss.str(line); ss.clear(); while(ss >> C[j++]);
@@ -67,17 +67,18 @@ bool isFeasible(
         int m,
         int n,
         const int *C,
-        const int *A,
-        const int *x,
+        const char *A,
+        const char *x,
         std::ostream** IO,
-        const int* extColumn,
+        const char* extColumn,
         bool verbose) {
     bool feasible = true;
-    int i(0), j(0), z(0), sum_xi(0), *column(nullptr);
+    int i(0), j(0), z(0), sum_xi(0);
+    char *column(nullptr);
     if(!extColumn) {
-        column = new int[m];
+        column = new char[m];
         for(j = 0; j < m; j++) column[j] = 0;
-    } else column = (int*)extColumn;
+    } else column = (char*)extColumn;
 
     for(i = 0; i < n && feasible; i++) {
         // If variable i is selected then we add the i-th column of
@@ -104,7 +105,7 @@ bool isFeasible(
     return feasible;
 }
 
-void freeSPP(int *C, int *A, double *U) {
+void freeSPP(int *C, char *A, float *U) {
     if(C) delete[] C, C = nullptr;
     if(A) delete[] A, A = nullptr;
     if(U) delete[] U, U = nullptr;

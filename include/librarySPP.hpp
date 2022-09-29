@@ -21,7 +21,7 @@
 
 // Macros to time an expression
 #define __CHRONO_HRC__ std::chrono::high_resolution_clock
-#define __DURATION__ std::chrono::duration<double>
+#define __DURATION__ std::chrono::duration<float>
 // CAUTION : Call INIT_TIMER() just once
 #define INIT_TIMER() __CHRONO_HRC__::time_point __m_time_var_a__, __m_time_var_b__;
 #define __m_time__() __CHRONO_HRC__::now()
@@ -47,7 +47,7 @@ std::set<std::string> getfname(
 //  *  C  the vector of coefficients from the objective function
 //  *  A  the binary matrix of constraints (as a 1D array)
 //  *  U  a vector of utilities computed for each variables
-std::tuple<int, int, int*, int*, double*> loadSPP(std::string fname);
+std::tuple<int, int, int*, char*, float*> loadSPP(std::string fname);
 
 // Takes  C  ,  A  and  x  and returns :
 //  * true if  x  is feasible
@@ -56,14 +56,14 @@ bool isFeasible(
         int m,
         int n,
         const int* C,
-        const int* A,
-        const int* x,
+        const char* A,
+        const char* x,
         std::ostream** IO = nullptr,
-        const int* extColumn = nullptr,
+        const char* extColumn = nullptr,
         bool verbose = true);
 
 // Free  C  ,  A  and  U
-void freeSPP(int* C, int* A, double* U);
+void freeSPP(int* C, char* A, float* U);
 
 // Computes indirect sort of an array (decreasing order)
 template<typename T>
@@ -83,9 +83,9 @@ size_t* argsort(int size, const T* arr) {
 }
 
 // Computes the dot product of two arrays
-template<typename T>
-T dot(int size, const T* v1, const T* v2) {
-    T product(0);
+template<typename T1, typename T2>
+T2 dot(int size, const T1* v1, const T2* v2) {
+    T2 product(0);
     for(--size; size >= 0; size--) // Avoids creating extra variable
         product += v1[size] * v2[size];
     return product;

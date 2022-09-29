@@ -9,10 +9,11 @@ int main() {
     std::ostream* io[2] = {&std::cout, &result_file};
     std::cout.precision(6);
 
-    double *U(nullptr);
+    float *U(nullptr);
     int m(-1), n(-1), zInit(-1), zBest(-1);
-    int *C(nullptr), *A(nullptr), *x(nullptr), *xbest(nullptr), *column(nullptr);
-    double tt(0.f), t1(0.f), t2(0.f); INIT_TIMER();
+    int *C(nullptr);
+    char *A(nullptr), *x(nullptr), *xbest(nullptr), *column(nullptr);
+    float tt(0.f), t1(0.f), t2(0.f); INIT_TIMER();
 
     m_print(io, "Etudiants : MERCIER et PICHON\n");
     std::set<std::string> fnames = getfname(path, io);
