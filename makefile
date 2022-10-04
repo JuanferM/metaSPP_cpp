@@ -22,8 +22,8 @@ CC 			:= g++
 CXXFLAGS	:= -Wall -fpic -std=c++20
 # Linker flag
 LDFLAGS		:=
-# LINKER_FLAGS specifies the libraries we're linking against
-LDLIBS		:=
+# LDFLAGS specifies the libraries we're linking against
+LDLIBS		:= -lglpk -lm
 # -I is a preprocessor flag, not a compiler flag
 CPPFLAGS	:=
 

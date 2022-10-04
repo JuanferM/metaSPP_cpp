@@ -1,4 +1,5 @@
 #include "librarySPP.hpp"
+#include <string>
 
 std::set<std::string> getfname(
         std::string pathtofolder,
@@ -61,6 +62,82 @@ std::tuple<int, int, int*, char*, float*> loadSPP(std::string fname)
 
     for(i = 0; i < n; i++) U[i] = C[i]/U[i];
     return std::make_tuple(m, n, C, A, U);
+}
+
+void modelSPP(
+        std::string instance,
+        std::string path,
+        std::ostream** IO,
+        float* tt) {
+    int z(-1), m(-1), n(-1), ne(0), j(0), i(0), v(0);
+    int *C(nullptr), *ia(nullptr), *ja(nullptr);
+    double t(0.f), *ar(nullptr); INIT_TIMER();
+    std::ifstream f(path + instance);
+    std::string line("");
+    std::stringstream ss("");
+
+    /* Load data */
+    try {
+        if(f.is_open()) {
+            // Read m (number of constraints) and n (number of variables)
+            f >> m >> n; f.ignore();
+            // Creates C, U and A. Init U and A elements to zero.
+            C = new int[n], ia = new int[1+m], ja = new int[1+n];
+            ar = new double[1+m*n];
+            // Read the n coefficiens of the objective function and init C
+            getline(f, line); ss.str(line); ss.clear(); while(ss >> C[i++]);
+            // Read the m constraints and reconstruct matrix A
+            for(i = 0; i < m; i++){
+                // Read number of not null elements on constraint i (not used)
+                getline(f, line);
+                // Read indices of not null elements on constraint i
+                getline(f, line); ss.str(line); ss.clear();
+                j = 0;
+                while(ss >> v) {
+                    ia[ne+1] = i+1;
+                    ja[ne+1] = j+1;
+                    ar[ne+1] = (double)v;
+                    ne += 1; j += 1;
+                }
+            }
+            f.close();
+        }
+    } catch(std::exception const& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl;
+    }
+
+    m_print(IO, "\nInstance : ", instance, "\n\n");
+
+    /* Create problem */
+    glp_prob *lp = glp_create_prob();
+    glp_set_prob_name(lp, "Set Packing Problem (SPP)");
+    glp_set_obj_dir(lp, GLP_MAX);
+
+    /* Model SPP */
+    glp_add_rows(lp, m);
+    for(i = 1; i < m+1; i++) {
+        glp_set_row_name(lp, i, std::to_string(i).c_str());
+        glp_set_row_bnds(lp, i, GLP_DB, 0, 1);
+    }
+
+    glp_add_cols(lp, n);
+    for(j = 1; j < n+1; j++) {
+        glp_set_col_kind(lp, j, GLP_IV);
+        glp_set_obj_coef(lp, j, C[j-1]);
+        glp_set_col_name(lp, j, std::string("x" + std::to_string(j)).c_str());
+        glp_set_col_bnds(lp, j, GLP_DB, 0, 1);
+    }
+
+    glp_load_matrix(lp, ne, ia, ja, ar);
+
+    /* Solve with simplex */
+    TIMED(t, glp_simplex(lp, NULL)); (*tt) += t;
+    z = glp_get_obj_val(lp);
+    std::cout << "Résolue en " << t << " secondes. z_opt = " << z << std::endl;
+
+    /* Free problem and arrays */
+    glp_delete_prob(lp);
+    delete[] C; delete[] ia; delete[] ja; delete[] ar;
 }
 
 bool isFeasible(

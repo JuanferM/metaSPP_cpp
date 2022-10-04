@@ -1,6 +1,4 @@
 #include "movements.hpp"
-#include <iostream>
-
 bool zero_oneExchange(
         int m,
         int n,

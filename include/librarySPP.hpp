@@ -16,6 +16,8 @@
 #include <stdexcept>
 #include <cassert>
 
+#include <glpk.h>
+
 // Macro wrapping assert to print a message
 #define m_assert(expr, msg) assert(( (void)(msg), (expr) ))
 
@@ -48,6 +50,13 @@ std::set<std::string> getfname(
 //  *  A  the binary matrix of constraints (as a 1D array)
 //  *  U  a vector of utilities computed for each variables
 std::tuple<int, int, int*, char*, float*> loadSPP(std::string fname);
+
+// Models the SPP and run GLPK on instance  instance :
+void modelSPP(
+        std::string fname,
+        std::string path = "",
+        std::ostream** IO = nullptr,
+        float* tt = nullptr);
 
 // Takes  C  ,  A  and  x  and returns :
 //  * true if  x  is feasible
