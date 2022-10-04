@@ -69,7 +69,7 @@ void modelSPP(
         std::string path,
         std::ostream** IO,
         float* tt) {
-    int z(-1), m(-1), n(-1), ne(0), j(0), i(0), v(0);
+    int z(-1), m(-1), n(-1), ne(0), j(0), i(0);
     int *C(nullptr), *ia(nullptr), *ja(nullptr);
     double t(0.f), *ar(nullptr); INIT_TIMER();
     std::ifstream f(path + instance);
@@ -87,17 +87,16 @@ void modelSPP(
             // Read the n coefficiens of the objective function and init C
             getline(f, line); ss.str(line); ss.clear(); while(ss >> C[i++]);
             // Read the m constraints and reconstruct matrix A
-            for(i = 0; i < m; i++){
+            for(i = 1; i < m+1; i++){
                 // Read number of not null elements on constraint i (not used)
                 getline(f, line);
                 // Read indices of not null elements on constraint i
                 getline(f, line); ss.str(line); ss.clear();
-                j = 0;
-                while(ss >> v) {
-                    ia[ne+1] = i+1;
-                    ja[ne+1] = j+1;
-                    ar[ne+1] = (double)v;
-                    ne += 1; j += 1;
+                while(ss >> j) {
+                    ia[ne+1] = i;
+                    ja[ne+1] = j;
+                    ar[ne+1] = (double)1;
+                    ne += 1;
                 }
             }
             f.close();
@@ -128,6 +127,7 @@ void modelSPP(
         glp_set_col_bnds(lp, j, GLP_DB, 0, 1);
     }
 
+    std::cout << glp_check_dup(m, n, ne, ia, ja) << std::endl;
     glp_load_matrix(lp, ne, ia, ja, ar);
 
     /* Solve with simplex */
