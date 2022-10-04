@@ -129,10 +129,14 @@ void modelSPP(
 
     glp_load_matrix(lp, ne, ia, ja, ar);
 
-    /* Solve with simplex */
-    TIMED(t, glp_simplex(lp, NULL)); (*tt) += t;
+    /* Solve with simplex without presolve */
+    glp_smcp parm;
+    glp_init_smcp(&parm);
+    parm.presolve = GLP_OFF;
+    TIMED(t, glp_simplex(lp, &parm)); (*tt) += t;
     z = glp_get_obj_val(lp);
     std::cout << "Résolue en " << t << " secondes. z_opt = " << z << std::endl;
+    glp_write_mip(lp, std::string("test_"+instance).c_str());
 
     /* Free problem and arrays */
     glp_delete_prob(lp);

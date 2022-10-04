@@ -1,0 +1,25 @@
+c Problem:    Set Packing Problem (SPP)
+c Rows:       7
+c Columns:    9
+c Non-zeros:  29
+c Status:     INTEGER UNDEFINED
+c Objective:  0 (MAXimum)
+c
+s mip 7 9 u 0
+i 1 0
+i 2 0
+i 3 0
+i 4 0
+i 5 0
+i 6 0
+i 7 0
+j 1 0
+j 2 0
+j 3 0
+j 4 0
+j 5 0
+j 6 0
+j 7 0
+j 8 0
+j 9 0
+e o f
