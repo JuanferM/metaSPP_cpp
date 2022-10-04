@@ -82,7 +82,7 @@ void modelSPP(
             // Read m (number of constraints) and n (number of variables)
             f >> m >> n; f.ignore();
             // Creates C, U and A. Init U and A elements to zero.
-            C = new int[n], ia = new int[1+m], ja = new int[1+n];
+            C = new int[n], ia = new int[1+n*m], ja = new int[1+n*m];
             ar = new double[1+m*n];
             // Read the n coefficiens of the objective function and init C
             getline(f, line); ss.str(line); ss.clear(); while(ss >> C[i++]);
@@ -95,7 +95,7 @@ void modelSPP(
                 while(ss >> j) {
                     ia[ne+1] = i;
                     ja[ne+1] = j;
-                    ar[ne+1] = (double)1;
+                    ar[ne+1] = 1;
                     ne += 1;
                 }
             }
@@ -127,7 +127,6 @@ void modelSPP(
         glp_set_col_bnds(lp, j, GLP_DB, 0, 1);
     }
 
-    std::cout << glp_check_dup(m, n, ne, ia, ja) << std::endl;
     glp_load_matrix(lp, ne, ia, ja, ar);
 
     /* Solve with simplex */
