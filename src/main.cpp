@@ -2,6 +2,7 @@
 
 #define DEEPSEARCH true
 #define USE_GLPK true
+#define VERBOSE_GLPK false
 
 int main() {
     std::string pwd(std::filesystem::current_path());
@@ -23,11 +24,11 @@ int main() {
     std::set<std::string> fnames = getfname(path, io);
     for(auto instance : fnames) {
         #if USE_GLPK
-            modelSPP(instance, path, io, &tt);
+            modelSPP(instance, path, io, &tt, VERBOSE_GLPK);
         #else
             // Load one numerical instance
             std::tie(m, n, C, A, U) = loadSPP(path + instance);
-            m_print(io, "\n\nInstance : ", instance, "\n\n");
+            m_print(io, _CLB, "\n\nInstance : ", instance, "\n\n", _CLR);
 
             zInit = 0; zBest = 0;
 
@@ -59,7 +60,7 @@ int main() {
         #endif
     }
 
-    m_print(io, "\nTotal solving time : ", tt, " seconds\n");
+    m_print(io, _CLP, "\nTotal solving time : ", tt, " seconds\n", _CLR);
 
     result_file.close(); glp_free_env();
     return 0;

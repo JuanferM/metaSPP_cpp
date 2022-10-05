@@ -38,6 +38,13 @@
 // Shorter version. CAUTION: only use if  n  is in the scope
 #define INDEX(row, col) _INDEX(row, col, n)
 
+// Macros for color printing
+#define _CLR     "\u001B[0m"
+#define _CLRd    "\033[1;31m"
+#define _CLG     "\033[1;32m"
+#define _CLB     "\u001B[36m"
+#define _CLP     "\033[1;35m"
+
 // Collect the unhidden filenames available in a given folder
 std::set<std::string> getfname(
         std::string pathtofolder,
@@ -56,7 +63,8 @@ void modelSPP(
         std::string fname,
         std::string path = "",
         std::ostream** IO = nullptr,
-        float* tt = nullptr);
+        float* tt = nullptr,
+        bool verbose = true);
 
 // Takes  C  ,  A  and  x  and returns :
 //  * true if  x  is feasible

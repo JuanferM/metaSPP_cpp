@@ -68,7 +68,8 @@ void modelSPP(
         std::string instance,
         std::string path,
         std::ostream** IO,
-        float* tt) {
+        float* tt,
+        bool verbose) {
     int z(-1), m(-1), n(-1), ne(0), j(0), i(0);
     int *C(nullptr), *ia(nullptr), *ja(nullptr);
     double t(0.f), *ar(nullptr); INIT_TIMER();
@@ -105,7 +106,10 @@ void modelSPP(
         std::cerr << "ERROR: " << e.what() << std::endl;
     }
 
-    m_print(IO, "\nInstance : ", instance, "\n\n");
+    if(!IO)
+        std::cout << "\nInstance : " << instance << std::endl << std::endl;
+    else
+        m_print(IO, _CLB, "\nInstance : ", instance, "\n\n", _CLR);
 
     /* Create problem */
     glp_prob *lp = glp_create_prob();
@@ -129,14 +133,19 @@ void modelSPP(
 
     glp_load_matrix(lp, ne, ia, ja, ar);
 
-    /* Solve with simplex without presolve */
-    glp_smcp parm;
-    glp_init_smcp(&parm);
-    parm.presolve = GLP_OFF;
-    TIMED(t, glp_simplex(lp, &parm)); (*tt) += t;
-    z = glp_get_obj_val(lp);
-    std::cout << "Résolue en " << t << " secondes. z_opt = " << z << std::endl;
-    glp_write_mip(lp, std::string("test_"+instance).c_str());
+    /* Solve with simplex with presolve and time limit */
+    glp_iocp parm;
+    glp_init_iocp(&parm);
+    if(!verbose) parm.msg_lev = GLP_MSG_ON;
+    parm.presolve = GLP_ON;
+    parm.tm_lim = 180000; // 180s time limit
+
+    TIMED(t, glp_intopt(lp, &parm)); (*tt) += t;
+    z = glp_mip_obj_val(lp);
+    if(!IO)
+        std::cout << "Résolue en " << t << " secondes. z_opt = " << z << std::endl;
+    else
+        m_print(IO, _CLG, "Résolue en ", t, " secondes. z_opt = ", z, "\n", _CLR);
 
     /* Free problem and arrays */
     glp_delete_prob(lp);
@@ -178,7 +187,7 @@ bool isFeasible(
             std::cout << "Feasible : yes | Σ(x_i) = " << sum_xi
                 << " ; z(x) = " << z << std::endl;
         else
-            m_print(IO, "Feasible : yes | Σ(x_i) = ", sum_xi, " ; z(x) = ", z, "\n");
+            m_print(IO, _CLG, "Feasible : yes | Σ(x_i) = ", sum_xi, " ; z(x) = ", z, "\n", _CLR);
     }
 
     if(!extColumn) delete[] column;
