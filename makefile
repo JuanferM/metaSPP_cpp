@@ -38,6 +38,12 @@ $(EXE): $(OBJ) | $(BIN_DIR)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) $(INC) -c $< -o $@
 
+$(BIN_DIR):
+	mkdir -p $@
+
+$(OBJ_DIR):
+	mkdir -p $@
+
 clean:
 	@$(RM) -rv $(EXE) $(OBJ_DIR)/*
 

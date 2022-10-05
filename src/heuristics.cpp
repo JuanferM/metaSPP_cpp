@@ -68,8 +68,8 @@ std::tuple<char*, int> GreedyImprovement(
     while(i >= 0) {
         t = f[i](m, n, C, A, nx, &nz, deep, column);
         if(!printed[i])
-            m_print(io, "\n > ", names[i], " : "), printed[i] = true;
-        if(t) m_print(io, "x"); else i--;
+            m_print(*io[0], "\n > ", names[i], " : "), printed[i] = true;
+        if(t) m_print(*io[0], "x"); else i--;
     }
 
     return std::make_tuple(nx, nz);

@@ -108,17 +108,12 @@ T2 dot(int size, const T1* v1, const T2* v2) {
     return product;
 }
 
-void var_print(std::ostream& out);
+void m_print(std::ostream& out);
 
 template<typename T, typename... Args>
-void var_print(std::ostream& out, T t, Args... args) {
+void m_print(std::ostream& out, T t, Args... args) {
     out << std::fixed << t;
-    if(sizeof...(args) != 0) var_print(out, args...);
-}
-
-template<typename... Args>
-void m_print(std::ostream* out[2], Args... args){
-    for(int i = 0; i < 2; i++) var_print(*out[i], args...);
+    if(sizeof...(args) != 0) m_print(out, args...);
 }
 
 

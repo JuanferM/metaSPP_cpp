@@ -8,8 +8,7 @@ std::set<std::string> getfname(
     // Get all files from folder
     std::filesystem::directory_iterator dir(pathtofolder);
 
-    if(!IO) std::cout << "Loading instances..." << std::endl;
-    else m_print(IO, "Loading instances...\n");
+    m_print(*IO[0], "Loading instances...\n");
     for(const auto &file : dir) {
         std::filesystem::path p(file.path());
         // Get filename
@@ -19,12 +18,11 @@ std::set<std::string> getfname(
         if(f[0] != '.') {
             files.insert(f);
             if(!IO) std::cout << "fname = " << f << std::endl;
-            else m_print(IO, "fname = ", f, "\n");
+            else m_print(*IO[0], "fname = ", f, "\n");
         }
     }
 
-    if(!IO) std::cout << "DONE!" << std::endl;
-    else m_print(IO, "DONE!\n");
+    m_print(*IO[0], "DONE!\n");
 
     return files;
 }
@@ -106,10 +104,7 @@ void modelSPP(
         std::cerr << "ERROR: " << e.what() << std::endl;
     }
 
-    if(!IO)
-        std::cout << "\nInstance : " << instance << std::endl << std::endl;
-    else
-        m_print(IO, _CLB, "\nInstance : ", instance, "\n\n", _CLR);
+    m_print(*IO[0], _CLB, "\nInstance : ", instance, "\n\n", _CLR);
 
     /* Create problem */
     glp_prob *lp = glp_create_prob();
@@ -142,10 +137,7 @@ void modelSPP(
 
     TIMED(t, glp_intopt(lp, &parm)); (*tt) += t;
     z = glp_mip_obj_val(lp);
-    if(!IO)
-        std::cout << "Résolue en " << t << " secondes. z_opt = " << z << std::endl;
-    else
-        m_print(IO, _CLG, "Résolue en ", t, " secondes. z_opt = ", z, "\n", _CLR);
+    m_print(*IO[0], _CLG, "Résolue en ", t, " secondes. z_opt = ", z, "\n", _CLR);
 
     /* Free problem and arrays */
     glp_delete_prob(lp);
@@ -183,11 +175,7 @@ bool isFeasible(
 
     if(verbose) {
         m_assert(feasible, "No feasible solution detected");
-        if(!IO)
-            std::cout << "Feasible : yes | Σ(x_i) = " << sum_xi
-                << " ; z(x) = " << z << std::endl;
-        else
-            m_print(IO, _CLG, "Feasible : yes | Σ(x_i) = ", sum_xi, " ; z(x) = ", z, "\n", _CLR);
+        m_print(*IO[0], _CLG, "Feasible : yes | Σ(x_i) = ", sum_xi, " ; z(x) = ", z, "\n", _CLR);
     }
 
     if(!extColumn) delete[] column;
