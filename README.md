@@ -29,7 +29,7 @@ Sinon pour des descentes normales :
 ```
 
 ### GLPK
-Pour lancer GLPK sur les instances veuillez redéfinir la macro USE_GLPK (macro dans le
+Pour lancer GLPK sur les instances veuillez redéfinir USE_GLPK (macro dans le
 fichier `src/main.cpp`) à true :
 ```c
 #define USE_GLPK true
@@ -39,7 +39,7 @@ Sinon pour des descentes normales :
 #define USE_GLPK false
 ```
 
-De plus, pour activer tous les messages de GLPK redéfinir la macro VERBOSE_GLPK (macro dans
+De plus, pour activer tous les messages de GLPK redéfinir VERBOSE_GLPK (macro dans
 le fichier `src/main.cpp`) à true :
 ```c
 #define VERBOSE_GLPK true
