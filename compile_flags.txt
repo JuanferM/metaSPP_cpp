@@ -1,0 +1,5 @@
+-Wall
+-fpic
+-std=c++20
+-I./include
+-lglpk -lm
