@@ -19,7 +19,7 @@ doit être dans `bin`. Pour utiliser le makefile les répertoires `bin`, `includ
 
 ### Descente/Plus profonde descente
 Pour effectuer des améliorations par recherche locale de type plus profonde descente
-veuillez définir DEEPSEARCH (macro dans le fichier `src/main.cpp`) à true :
+veuillez redéfinir DEEPSEARCH (macro dans le fichier `src/main.cpp`) à true :
 ```c
 #define DEEPSEARCH true
 ```
@@ -28,6 +28,26 @@ Sinon pour des descentes normales :
 #define DEEPSEARCH false
 ```
 
+### GLPK
+Pour lancer GLPK sur les instances veuillez redéfinir la macro USE_GLPK (macro dans le
+fichier `src/main.cpp`) à true :
+```c
+#define USE_GLPK true
+```
+Sinon pour des descentes normales :
+```c
+#define USE_GLPK false
+```
+
+De plus, pour activer tous les messages de GLPK redéfinir la macro VERBOSE_GLPK (macro dans
+le fichier `src/main.cpp`) à true :
+```c
+#define VERBOSE_GLPK true
+```
+Sinon pour ne recevoir que les messages normaux :
+```c
+#define VERBOSE_GLPK false
+```
 
 ### Listes des instances qui ont été utilisées pour l'expérimentation
 * didactic.dat
