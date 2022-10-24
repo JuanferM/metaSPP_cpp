@@ -19,7 +19,7 @@ INC := $(foreach d, $(INC_DIR), -I$d)
 # CC specifies which compiler we're using
 CC 			:= g++
 # COMPILER_FLAGS specifies the additional compilation options we're using
-CXXFLAGS	:= -Wall -fpic -std=c++20
+CXXFLAGS	:= -Wall -fpic -std=c++2a
 # Linker flag
 LDFLAGS		:=
 # LDFLAGS specifies the libraries we're linking against
