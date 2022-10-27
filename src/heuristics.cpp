@@ -29,7 +29,7 @@ std::tuple<char*, int, char*> GreedyConstruction(
     i = 1;
     while(s != m && i < n) {
         for(j = 0, valid = true; j < m && valid; j++)
-            valid = column[j] + A[INDEX(u_order[i], j)] <= 1;
+            valid = !(column[j] & A[INDEX(u_order[i], j)]);
         for(j = 0, s = 0; j < m && valid; s += column[j], j++)
             column[j] += A[INDEX(u_order[i], j)];
         x[u_order[i++]] = valid;
