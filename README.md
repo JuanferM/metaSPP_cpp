@@ -2,19 +2,18 @@
 Heuristique de construction et recherche locale pour le Set Packing Problem (SPP)
 
 *Commande pour compiler*:
-```bash
-make clean && make
-```
+
+    make clean && make
+
 
 *Commande pour lancer le programme*:
-```bash
-./bin/DM1
-```
+
+    ./bin/DM1
+
 
 **ATTENTION:** le répertoire `instances` doit se trouver dans le même répertoire
 d'où le programme est lancé. Si le programme est lancé depuis `bin` alors `instances`
-doit être dans `bin`. Pour utiliser le makefile les répertoires `bin`, `include`,
-`src` et `obj` doivent être présents.
+doit être dans `bin`.
 
 
 ### Descente/Plus profonde descente
