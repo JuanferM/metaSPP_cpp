@@ -45,6 +45,6 @@ $(OBJ_DIR):
 	mkdir -p $@
 
 clean:
-	@$(RM) -rv $(EXE) $(OBJ_DIR)/*
+	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)
 
 -include $(OBJ:.o=.d)
